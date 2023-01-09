@@ -9,13 +9,27 @@ const onClickAdd = () => {
   const inputText = document.getElementById("add-text").value;
   document.getElementById("add-text").value = "";
 
+  createIncompleteList(inputText);
+};
+
+// 未完了リストから要素を削除する関数
+const deleteFromImcompleteList = (target) => {
+  document.getElementById("incomplete-list").removeChild(target);
+};
+
+// 完了リストから要素を削除する関数
+const deleteFromCompleteList = (target) => {
+  document.getElementById("complete-list").removeChild(target);
+};
+
+// 未完了リストに追加する関数
+const createIncompleteList = (text) => {
   // div生成
   const div = document.createElement("div");
   div.className = "list-row";
-
   // li生成
   const li = document.createElement("li");
-  li.innerText = inputText;
+  li.innerText = text;
 
   // 完了button生成
   const completeButton = document.createElement("button");
@@ -29,12 +43,17 @@ const onClickAdd = () => {
     const li = document.createElement("li");
     const completeText = completeButton.parentNode.firstElementChild.innerText;
     li.innerText = completeText;
+
     // 戻すbutton生成
     const reverseButton = document.createElement("button");
     reverseButton.innerText = "戻す";
     reverseButton.addEventListener("click", () => {
-      alert("戻す");
+      const reverseText = reverseButton.parentNode.firstElementChild.innerText;
+      createIncompleteList(reverseText);
+      // 完了のToDoから削除
+      deleteFromCompleteList(reverseButton.parentNode);
     });
+
     // divの子要素として各要素を設定
     div.appendChild(li);
     div.appendChild(reverseButton);
@@ -60,11 +79,6 @@ const onClickAdd = () => {
 
   // 未完了リストに追加
   document.getElementById("incomplete-list").appendChild(div);
-};
-
-// 未完了リストから要素を削除する関数
-const deleteFromImcompleteList = (target) => {
-  document.getElementById("incomplete-list").removeChild(target);
 };
 
 document
